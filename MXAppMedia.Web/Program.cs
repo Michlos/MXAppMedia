@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+
+using MXAppMedia.Api.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+var PostgeSqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(PostgeSqlConnection));
+
+
 
 var app = builder.Build();
 
