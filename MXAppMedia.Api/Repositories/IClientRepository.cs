@@ -31,5 +31,5 @@ public interface IClientRepository
     /// Deletes a client by its ID.
     /// </summary>
     /// <param name="id">The ID of the client to delete.</param>
-    Task<Client> DeleteClientAsync(Guid id);
+    Task<Client> DeleteClientAsync(int id);
 }

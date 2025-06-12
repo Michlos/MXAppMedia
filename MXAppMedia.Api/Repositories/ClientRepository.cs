@@ -21,7 +21,7 @@ public class ClientRepository : IClientRepository
         return client;
     }
 
-    public async Task<Client> DeleteClientAsync(Guid id)
+    public async Task<Client> DeleteClientAsync(int id)
     {
         var client = _context.Clients.Find(id);
         if (client == null) return null;
