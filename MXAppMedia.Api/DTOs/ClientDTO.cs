@@ -13,8 +13,11 @@ public class ClientDTO
     [MinLength(3, ErrorMessage ="Client Name must be minimal 3 characters")]
     [MaxLength(100, ErrorMessage ="Client Name must be maximal 5 characters")]
     public string? Name { get; set; }
+    
     public string? CNPJ { get; set; }
     public string? CPF { get; set; }
+
+    [MaxLength(100, ErrorMessage ="Contact Person must be maximal 100 characters")]
     public string? ContactPerson { get; set; }
     public string? Email { get; set; }
 }

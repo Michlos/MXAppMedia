@@ -10,4 +10,5 @@ public class Client
     public string? ContactPerson { get; set; }
     public string? Email { get; set; }
     public ICollection<Media>? Medias { get; set; }
+    public bool IsActive { get; set; } = true;
 }
