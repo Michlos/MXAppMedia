@@ -11,7 +11,6 @@ public class ClientRepository : IClientRepository
     public ClientRepository(AppDbContext context)
     {
         _context = context;
-        
     }
 
     public async Task<Client> AddClientAsync(Client client)
@@ -21,9 +20,9 @@ public class ClientRepository : IClientRepository
         return client;
     }
 
-    public async Task<Client> DeleteClientAsync(int id)
+    public async Task<Client?> DeleteClientAsync(int id)
     {
-        var client = _context.Clients.Find(id);
+        var client = await _context.Clients.FindAsync(id); 
         if (client == null) return null;
         _context.Clients.Remove(client);
         await _context.SaveChangesAsync();
@@ -48,5 +47,4 @@ public class ClientRepository : IClientRepository
         await _context.SaveChangesAsync();
         return client;
     }
-
 }
