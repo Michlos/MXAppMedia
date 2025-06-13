@@ -36,8 +36,15 @@ public class MediaRepository : IMediaRepository
     public async Task<IEnumerable<Media>> GetAllMediaAsync()
     {
         return await _context.Medias
-            .Include(m => m.Client) // Include related Client data if needed
             .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Media>> GetAllMediaByClientId(int clientId)
+    {
+        return await _context.Medias
+           .Include(m => m.Client) // Include related Client data if needed
+           .Where(m => m.ClientId == clientId)
+           .ToListAsync();
     }
 
     public async Task<Media?> GetMediaByIdAsync(int id)
