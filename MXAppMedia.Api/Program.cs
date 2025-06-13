@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 
 using MXAppMedia.Api.Context;
+using MXAppMedia.Api.Repositories;
+using MXAppMedia.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //AutoMapper configuration
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+//Dependency Injection for Repositories
+builder.Services.AddScoped<IMediaRepository, MediaRepository>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+
+//Dependency Injection for Services
+builder.Services.AddScoped<IMediaService, MediaService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+
 
 var app = builder.Build();
 
