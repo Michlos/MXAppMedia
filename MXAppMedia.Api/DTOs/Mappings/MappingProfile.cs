@@ -15,6 +15,7 @@ public class MappingProfile : Profile
 
         CreateMap<Media, MediaDTO>()
             .ForMember(med => med.Client, opt => opt.MapFrom(src => src.Client))
+            .ForMember(med => med.ClientName, opt => opt.MapFrom(src => src.Client.Name))
             .ReverseMap();
     }
 }

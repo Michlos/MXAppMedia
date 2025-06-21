@@ -36,6 +36,7 @@ public class MediaRepository : IMediaRepository
     public async Task<IEnumerable<Media>> GetAllMediaAsync()
     {
         return await _context.Medias
+            .Include(m => m.Client) // Include related Client data if needed
             .ToListAsync();
     }
 

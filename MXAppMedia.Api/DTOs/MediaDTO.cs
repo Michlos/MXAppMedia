@@ -25,6 +25,8 @@ public class MediaDTO
     [MaxLength(255, ErrorMessage ="The URL Media must be maximal 255 characters")]
     public string? MediaUrl { get; set; }
 
+    public string? ClientName { get; set; }
+
     [Required(ErrorMessage = "Yout must informe the valid Id from client")]
     [DeniedValues(0, ErrorMessage = "You must be informe the valid Cliente Id")]
     public int ClientId { get; set; }

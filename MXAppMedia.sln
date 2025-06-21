@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36202.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MXAppMedia.Api", "MXAppMedia.Api\MXAppMedia.Api.csproj", "{7EAB5E8A-86B6-4746-8CF3-48B78B8367D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MXAppMedia.Web", "MXAppMedia.Web\MXAppMedia.Web.csproj", "{F782622B-0100-41F4-8F5A-FB07E805EAD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7EAB5E8A-86B6-4746-8CF3-48B78B8367D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EAB5E8A-86B6-4746-8CF3-48B78B8367D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EAB5E8A-86B6-4746-8CF3-48B78B8367D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F782622B-0100-41F4-8F5A-FB07E805EAD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F782622B-0100-41F4-8F5A-FB07E805EAD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F782622B-0100-41F4-8F5A-FB07E805EAD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F782622B-0100-41F4-8F5A-FB07E805EAD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
