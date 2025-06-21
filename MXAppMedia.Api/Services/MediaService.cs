@@ -41,10 +41,10 @@ public class MediaService : IMediaService
         return _mapper.Map<IEnumerable<MediaDTO>>(mediaEntities);
     }
 
-    public Task<MediaDTO> GetMediaById(int id)
+    public async Task<MediaDTO> GetMediaById(int id)
     {
-        var mediaEntity = _mediaRepository.GetMediaByIdAsync(id);
-        return _mapper.Map<Task<MediaDTO>>(mediaEntity);
+        var mediaEntity = await _mediaRepository.GetMediaByIdAsync(id);
+        return _mapper.Map<MediaDTO>(mediaEntity);
     }
 
     public async Task UpdateMedia(MediaDTO mediaDto)

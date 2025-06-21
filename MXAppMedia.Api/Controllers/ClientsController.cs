@@ -41,7 +41,7 @@ public class ClientsController : ControllerBase
         if (clientDto == null)
             return BadRequest("Client data is null.");
         await _clientService.AddClient(clientDto);
-        return CreatedAtRoute("GetClient", new { id = clientDto.Id }, clientDto);
+        return new CreatedAtRouteResult("GetClient", new { id = clientDto.Id }, clientDto);
     }
 
     [HttpPut("{id:int}", Name = "UpdateClient")]
@@ -50,9 +50,9 @@ public class ClientsController : ControllerBase
         if (clientDto == null || clientDto.Id != id)
             return BadRequest("Client data is invalid.");
         
-        var existingClient = await _clientService.GetClientById(id);
-        if (existingClient == null)
-            return NotFound("Client not found.");
+        //var existingClient = await _clientService.GetClientById(id);
+        //if (existingClient == null)
+        //    return NotFound("Client not found.");
         await _clientService.UpdateClient(clientDto);
         //return NoContent();
         return Ok(clientDto);

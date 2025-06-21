@@ -1,6 +1,7 @@
 ﻿using MXAppMedia.Api.Models;
 
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MXAppMedia.Api.DTOs;
 
@@ -28,6 +29,7 @@ public class MediaDTO
     [DeniedValues(0, ErrorMessage = "You must be informe the valid Cliente Id")]
     public int ClientId { get; set; }
 
+    [JsonIgnore]
     public Client? Client { get; set; }
     public bool IsActive { get; set; }
 
