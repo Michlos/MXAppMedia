@@ -1,3 +1,6 @@
+using MXAppMedia.Web.Services;
+using MXAppMedia.Web.Services.Contracts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +10,9 @@ builder.Services.AddHttpClient("MediaApi", c =>
 {
     c.BaseAddress = new Uri(builder.Configuration["ServiceUri:MediaApi"]);
 });
+
+builder.Services.AddScoped<IMediaService, MediaService>();
+builder.Services.AddScoped<IClientService, ClientService>();
 
 var app = builder.Build();
 
