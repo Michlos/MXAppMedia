@@ -12,10 +12,11 @@ public class MappingProfile : Profile
         // CreateMap<DestinationModel, SourceModel>();
         CreateMap<Client, ClientDTO>()
             .ReverseMap();
+        
+        CreateMap<MediaDTO, Media>();
 
         CreateMap<Media, MediaDTO>()
             .ForMember(med => med.Client, opt => opt.MapFrom(src => src.Client))
-            .ForMember(med => med.ClientName, opt => opt.MapFrom(src => src.Client.Name))
-            .ReverseMap();
+            .ForMember(med => med.ClientName, opt => opt.MapFrom(src => src.Client.Name));
     }
 }
