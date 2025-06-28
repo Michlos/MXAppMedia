@@ -25,8 +25,8 @@ public class MediaService : IMediaService
 
     public async Task DeleteMediaAsync(int id)
     {
-        var mediaEntity = _mediaRepository.GetMediaByIdAsync(id);
-        await _mediaRepository.DeleteMediaAsync(mediaEntity.Id);
+        //var mediaEntity = _mediaRepository.GetMediaByIdAsync(id);
+        await _mediaRepository.DeleteMediaAsync(id);
     }
 
     public async Task<IEnumerable<MediaDTO>> GetAllMedias()

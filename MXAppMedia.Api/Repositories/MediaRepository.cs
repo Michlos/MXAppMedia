@@ -27,6 +27,7 @@ public class MediaRepository : IMediaRepository
     {
         var media = await _context.Medias.FindAsync(id);
         if (media == null) return null;
+
         _context.Medias.Remove(media);
         await _context.SaveChangesAsync();
         return media;

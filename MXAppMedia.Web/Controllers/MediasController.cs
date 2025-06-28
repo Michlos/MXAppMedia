@@ -90,12 +90,23 @@ public class MediasController : Controller
     }
 
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteMedia(int id)
+    [HttpGet]
+    public async Task<ActionResult<MediaViewModel>> DeleteMedia(int id)
+    {
+        var result = await _mediaService.GetMediaByIdAsync(id);
+        if (result is null)
+            return View("Error");
+
+        return View(result);
+    }
+
+    [HttpPost, ActionName("DeleteMedia")]
+    public async Task<IActionResult> DeleteMediaConfirmed(int id)
     {
         var result = await _mediaService.DeleteMediaAsync(id);
-        if (result)
-            return RedirectToAction(nameof(Index));
-        return NotFound("Media item not found or could not be deleted.");
+        if (!result)
+            return View("Error");       
+        
+        return RedirectToAction(nameof(Index));
     }
 }
