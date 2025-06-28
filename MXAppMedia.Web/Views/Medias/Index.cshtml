@@ -4,7 +4,7 @@
 <a asp-action="CreateMedia" class="btn btn-primary" title="Create New Media">
     <span class="fa fa-plus"></span> Create New Media
 </a>
-<div class="panel panel-defautl">
+<div class="panel panel-default">
     <table class="table table-striped">
         <thead>
             <tr>
@@ -40,12 +40,12 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ClientName)
                     </td>
-                    <td>
+                    <td align="right">
                         <a asp-action="EditMedia" asp-route-id="@item.Id" title="Edit" class="btn btn-warning">
                             <span class="fa fa-edit"></span>
                         </a>
                     </td>
-                    <td>
+                    <td align="left">
                         <a asp-action="DeleteMedia" asp-route-id="@item.Id" title="Delete" class="btn btn-danger">
                             <span class="fa fa-trash-alt"></span>
                         </a>

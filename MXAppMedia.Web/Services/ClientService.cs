@@ -1,6 +1,7 @@
 ﻿using MXAppMedia.Web.Models;
 using MXAppMedia.Web.Services.Contracts;
 
+using System.Diagnostics.Eventing.Reader;
 using System.Text.Json;
 
 namespace MXAppMedia.Web.Services;
@@ -38,14 +39,46 @@ public class ClientService : IClientService
         return listClientViewModel;
 
     }
-    public Task<ClientViewModel> GetClientByIdAsync(int id)
+    public async Task<ClientViewModel> GetClientByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("MediaApi");
+        using (var response = await client.GetAsync(apiEndPoint + id))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                clienteViewModel = await JsonSerializer
+                    .DeserializeAsync<ClientViewModel>(apiResponse, _options);
+            }
+            else
+            {
+                return null;
+            }
+            return clienteViewModel;
+        }
+
     }
 
-    public Task<ClientViewModel> AddClientAsync(ClientViewModel clientViewModel)
+    public async Task<ClientViewModel> AddClientAsync(ClientViewModel clientViewModel)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("MediaApi");
+        StringContent content = new StringContent(JsonSerializer.Serialize(clientViewModel),
+            System.Text.Encoding.UTF8, "application/json");
+
+        using (var response = await client.PostAsync(apiEndPoint, content))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                clienteViewModel = await JsonSerializer
+                    .DeserializeAsync<ClientViewModel>(apiResponse, _options);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        return clienteViewModel;
     }
 
     public Task<ClientViewModel> UpdateClientAsync(ClientViewModel clientViewModel)

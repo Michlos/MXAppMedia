@@ -1,0 +1,86 @@
+﻿@model MXAppMedia.Web.Models.ClientViewModel
+@{
+    ViewData["Title"] = "Creating a new Client";
+}
+<h2>@ViewData["Title"]</h2>
+<form asp-action="CreateClient" id="clientForm">
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="docType">Tipo de Documento</label>
+        <select id="docType" class="form-control">
+            <option value="CNPJ">Pessoa Jurídica</option>
+            <option value="CPF">Pessoa Física</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="cnpj-group">
+        <label asp-for="CNPJ"></label>
+        <input asp-for="CNPJ" class="form-control" />
+        <span asp-validation-for="CNPJ" class="text-danger"></span>
+    </div>
+    <div class="form-group" id="cpf-group" style="display:none;">
+        <label asp-for="CPF"></label>
+        <input asp-for="CPF" class="form-control" />
+        <span asp-validation-for="CPF" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ContactPerson"></label>
+        <input asp-for="ContactPerson" class="form-control" />
+        <span asp-validation-for="ContactPerson" class="text-danger"></span>
+    </div>
+    <hr />
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</form>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const docType = document.getElementById('docType');
+            const cnpjGroup = document.getElementById('cnpj-group');
+            const cpfGroup = document.getElementById('cpf-group');
+            const cnpjInput = document.getElementById('CNPJ');
+            const cpfInput = document.getElementById('CPF');
+
+            function toggleDocFields() {
+                if (docType.value === 'CNPJ') {
+                    cnpjGroup.style.display = '';
+                    cpfGroup.style.display = 'none';
+                    cpfInput.value = '';
+                } else {
+                    cnpjGroup.style.display = 'none';
+                    cpfGroup.style.display = '';
+                    cnpjInput.value = '';
+                }
+            }
+
+            docType.addEventListener('change', toggleDocFields);
+            toggleDocFields();
+
+            // Limpa o campo não selecionado antes de enviar o formulário
+            document.getElementById('clientForm').addEventListener('submit', function () {
+                if (docType.value === 'CNPJ') {
+                    cpfInput.value = '';
+                } else {
+                    cnpjInput.value = '';
+                }
+            });
+        });
+    </script>
+}

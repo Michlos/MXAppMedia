@@ -8,6 +8,8 @@ public class ClientViewModel
     public string? Name { get; set; }
     public string? CNPJ { get; set; }
     public string? CPF { get; set; }
+
+    [Display(Name = "Contact")]
     public string? ContactPerson { get; set; }
     public string? Email { get; set; }
 }
