@@ -55,4 +55,47 @@ public class MediasController : Controller
         }
         return View(mediaViewModel);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> EditMedia(int id)
+    {
+        ViewBag.ClientId = new SelectList(await 
+            _clientService.GetAllClientAsync(), "Id", "Name");
+
+        var result = await _mediaService.GetMediaByIdAsync(id);
+        
+        if (result == null)
+            return View("Error");
+        
+        return View(result);
+
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditMedia(MediaViewModel mediaViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _mediaService.UpdateMediaAsync(mediaViewModel);
+            if (result != null)
+                return RedirectToAction(nameof(Index));
+            //ModelState.AddModelError("", "Failed to update media item.");
+        }
+        //else
+        //{
+        //    ViewBag.ClientId = new SelectList(await 
+        //        _clientService.GetAllClientAsync(), "Id", "Name", mediaViewModel.ClientId);
+        //}
+        return View(mediaViewModel);
+    }
+
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteMedia(int id)
+    {
+        var result = await _mediaService.DeleteMediaAsync(id);
+        if (result)
+            return RedirectToAction(nameof(Index));
+        return NotFound("Media item not found or could not be deleted.");
+    }
 }

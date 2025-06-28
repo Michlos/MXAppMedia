@@ -53,13 +53,13 @@ public class MediasController : ControllerBase
         return CreatedAtRoute("GetMedia", new { id = mediaDto.Id }, mediaDto);
     }
 
-    [HttpPut("{id:int}", Name = "UpdateMedia")]
-    public async Task<ActionResult> UpdateMedia(int id, [FromBody] MediaDTO mediaDto)
+    [HttpPut()]
+    public async Task<ActionResult> UpdateMedia([FromBody] MediaDTO mediaDto)
     {
-        if (mediaDto == null || mediaDto.Id != id)
+        if (mediaDto == null)
             return BadRequest("Media data is invalid.");
         
-        var existingMedia = await _mediaService.GetMediaById(id);
+        var existingMedia = await _mediaService.GetMediaById(mediaDto.Id);
         if (existingMedia == null)
             return NotFound("Media not found.");
         await _mediaService.UpdateMedia(mediaDto);

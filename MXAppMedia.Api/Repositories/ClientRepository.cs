@@ -68,6 +68,6 @@ public class ClientRepository : IClientRepository
             entry.Property(c => c.IsActive).IsModified = true;
 
         await _context.SaveChangesAsync();
-        return client;
+        return existingClient;
     }
 }

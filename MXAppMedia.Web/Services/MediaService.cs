@@ -9,7 +9,7 @@ namespace MXAppMedia.Web.Services;
 public class MediaService : IMediaService
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private const string apiEndPoint = "/api/medias";
+    private const string apiEndPoint = "/api/Medias/";
     private readonly JsonSerializerOptions _options;
     private MediaViewModel mediaViewModel;
     private IEnumerable<MediaViewModel> listMediaViewModel;
