@@ -32,7 +32,7 @@ public class MediasController : Controller
     [HttpGet]
     public async Task<IActionResult> CreateMedia(int? clientId)
     {
-        ViewBag.ClientId = new SelectList(await 
+        ViewBag.ClientId = new SelectList(await
             _clientService.GetAllClientAsync(), "Id", "Name", clientId);
         var model = new MediaViewModel();
         if (clientId.HasValue)
@@ -47,13 +47,11 @@ public class MediasController : Controller
         return View(model);
     }
 
-    //Criar mídia para um cliente específico
     [HttpPost]
-    public async Task<IActionResult> CreateMedia(int clientId, MediaViewModel mediaViewModel)
+    public async Task<IActionResult> CreateMedia(MediaViewModel mediaViewModel)
     {
         if (ModelState.IsValid)
         {
-            mediaViewModel.ClientId = clientId;
             var result = await _mediaService.AddMediaAsync(mediaViewModel);
             if (result != null)
                 return RedirectToAction(nameof(Index));
@@ -61,26 +59,19 @@ public class MediasController : Controller
         }
         else
         {
-            ViewBag.ClientId = new SelectList(await 
-                _clientService.GetAllClientAsync(), "Id", "Name", clientId);
+            ViewBag.ClientId = new SelectList(await
+                _clientService.GetAllClientAsync(), "Id", "Name", mediaViewModel.ClientId);
         }
         return View(mediaViewModel);
     }
 
+    ////Criar mídia para um cliente específico
     //[HttpPost]
-    //public async Task<ActionResult> CreateMediaClient(int clientId)
-    //{
-    //    ViewBag.ClientId = new SelectList(await 
-    //        _clientService.GetAllClientAsync(), "Id", "Name", clientId);
-    //    var mediaViewModel = new MediaViewModel { ClientId = clientId };
-    //    return View("CreateMediaClient", mediaViewModel);
-    //}
-
-    //[HttpPost]
-    //public async Task<IActionResult> CreateMedia(MediaViewModel mediaViewModel)
+    //public async Task<IActionResult> CreateMedia(int clientId, MediaViewModel mediaViewModel)
     //{
     //    if (ModelState.IsValid)
     //    {
+    //        mediaViewModel.ClientId = clientId;
     //        var result = await _mediaService.AddMediaAsync(mediaViewModel);
     //        if (result != null)
     //            return RedirectToAction(nameof(Index));
@@ -88,23 +79,54 @@ public class MediasController : Controller
     //    }
     //    else
     //    {
-    //        ViewBag.ClientId = new SelectList(await
-    //            _clientService.GetAllClientAsync(), "Id", "Name", mediaViewModel.ClientId);
+    //        ViewBag.ClientId = new SelectList(await 
+    //            _clientService.GetAllClientAsync(), "Id", "Name", clientId);
     //    }
     //    return View(mediaViewModel);
     //}
 
     [HttpGet]
+    public async Task<IActionResult> CreateMediaClient(int clientId)
+    {
+        var client = await _clientService.GetClientByIdAsync(clientId);
+        var mediaViewModel = new MediaViewModel { ClientId = clientId, ClientName = client.Name };
+        return View("CreateMediaClient", mediaViewModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateMediaClient(int clientId, MediaViewModel mediaViewModel)
+    {
+
+        //aNÃO TA CRIANDO SOMENTE PEGANDO... TEM QUE CRIAR AQUI
+        if (ModelState.IsValid)
+        {
+            mediaViewModel.ClientId = clientId;
+            var result = await _mediaService.AddMediaAsync(mediaViewModel);
+            if (result != null)
+                return RedirectToAction("ClientDetailView", "Clients", new {id = clientId });
+            //ModelState.AddModelError("", "Failed to create media item for client.");
+        }
+        else
+        {
+            ViewBag.ClientId = new SelectList(await
+                _clientService.GetAllClientAsync(), "Id", "Name", clientId);
+            mediaViewModel = new MediaViewModel { ClientId = clientId };
+        }
+        return View("CreateMediaClient", mediaViewModel);
+    }
+
+
+    [HttpGet]
     public async Task<IActionResult> EditMedia(int id)
     {
-        ViewBag.ClientId = new SelectList(await 
-            _clientService.GetAllClientAsync(), "Id", "Name");
+        //ViewBag.ClientId = new SelectList(await 
+        //    _clientService.GetAllClientAsync(), "Id", "Name");
 
         var result = await _mediaService.GetMediaByIdAsync(id);
-        
+
         if (result == null)
             return View("Error");
-        
+
         return View(result);
 
     }
@@ -143,8 +165,8 @@ public class MediasController : Controller
     {
         var result = await _mediaService.DeleteMediaAsync(id);
         if (!result)
-            return View("Error");       
-        
+            return View("Error");
+
         return RedirectToAction(nameof(Index));
     }
 

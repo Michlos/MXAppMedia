@@ -1,6 +1,8 @@
 ﻿@model MXAppMedia.Web.Models.MediaViewModel
 
-<h2>Edit a Media</h2>
+<h2>Client: @Model.ClientName</h2>
+<hr />
+<h4>Media: @Model.Title </h4>
 <form asp-action="EditMedia">
     <hr />
     <div asp-validation-summary="All" class="text-danger">  </div>
