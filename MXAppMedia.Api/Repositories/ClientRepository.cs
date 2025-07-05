@@ -22,7 +22,7 @@ public class ClientRepository : IClientRepository
 
     public async Task<Client?> DeleteClientAsync(int id)
     {
-        var client = await _context.Clients.FindAsync(id); 
+        var client = await _context.Clients.FindAsync(id);
         if (client == null) return null;
         _context.Clients.Remove(client);
         await _context.SaveChangesAsync();

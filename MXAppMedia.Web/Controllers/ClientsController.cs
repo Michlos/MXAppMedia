@@ -65,7 +65,7 @@ namespace MXAppMedia.Web.Controllers
             }
 
             //trazer mídias do cliente
-            ICollection<MediaViewModel> medias =  _mediaService.GetAllMediaByClienteIdAsync(id).Result.ToList();
+            ICollection<MediaViewModel> medias = _mediaService.GetAllMediaByClienteIdAsync(id).Result.ToList();
 
             return View(client);
         }
@@ -104,7 +104,7 @@ namespace MXAppMedia.Web.Controllers
             {
                 var result = await _clientService.UpdateClientAsync(clientViewModel);
                 if (result != null)
-                    return RedirectToAction("ClientDetailView", "Clients", new {clientViewModel.Id});
+                    return RedirectToAction("ClientDetailView", "Clients", new { clientViewModel.Id });
                 //ModelState.AddModelError("", "Failed to update client.");
             }
             else
@@ -114,5 +114,28 @@ namespace MXAppMedia.Web.Controllers
             return View(clientViewModel);
         }
 
+        //DELETE CLIENT
+        [HttpGet]
+        public async Task<IActionResult> DeleteClient(int id)
+        {
+            var client = await _clientService.GetClientByIdAsync(id);
+            if (client == null)
+            {
+                return NotFound("Client not found.");
+            }
+            return View(client);
+        }
+        [HttpPost, ActionName("DeleteClient")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var result = await _clientService.DeleteClientAsync(id);
+            if (result)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            ModelState.AddModelError("", "Failed to delete client.");
+            return View(await _clientService.GetClientByIdAsync(id));
+
+        }
     }
 }

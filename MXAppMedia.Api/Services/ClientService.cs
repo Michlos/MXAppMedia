@@ -27,8 +27,7 @@ public class ClientService : IClientService
 
     public async Task DeleteClient(int id)
     {
-        var clientEntity = _clientRepository.GetClientByIdAsync(id);
-        await _clientRepository.DeleteClientAsync(clientEntity.Id);
+        await _clientRepository.DeleteClientAsync(id);
     }
 
     public async Task<IEnumerable<ClientDTO>> GetAllClients()

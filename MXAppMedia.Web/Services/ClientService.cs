@@ -93,8 +93,20 @@ public class ClientService : IClientService
         }
         return updatedClientViewModel; // Return null if not successful
     }
-    public Task<bool> DeleteClientAsync(int id)
+    public async Task<bool> DeleteClientAsync(int id)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("MediaApi");
+        using (var response = await client.DeleteAsync(apiEndPoint + id))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return true; // Return true if deletion was successful
+            }
+            else
+            {
+                return false; // Return false if deletion failed
+            }
+        }
+
     }
 }
