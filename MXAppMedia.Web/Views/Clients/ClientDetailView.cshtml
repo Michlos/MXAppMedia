@@ -70,7 +70,7 @@
                     <td>@media.Description</td>
                     <td><a href="@media.MediaUrl" target="_blank">@media.MediaUrl</a></td>
                     <td>
-                        <a asp-action="EditMedia" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a>
+                        <a asp-controller="Medias" asp-action="EditMedia" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a>
                         <form method="post" asp-action="DeleteMedia" asp-route-id="@media.Id" class="d-inline">
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>

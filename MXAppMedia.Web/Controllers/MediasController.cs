@@ -138,7 +138,7 @@ public class MediasController : Controller
         {
             var result = await _mediaService.UpdateMediaAsync(mediaViewModel);
             if (result != null)
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("ClientDetailView", "Clients", new {id = mediaViewModel.ClientId});
             //ModelState.AddModelError("", "Failed to update media item.");
         }
         //else
