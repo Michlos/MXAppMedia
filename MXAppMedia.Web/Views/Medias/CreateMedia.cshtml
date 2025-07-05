@@ -1,4 +1,53 @@
-﻿@model MXAppMedia.Web.Models.MediaViewModel
+﻿@* @* @* //Criar média para um cliente específico *@
+@* @model MXAppMedia.Web.Models.MediaViewModel *@
+
+@* <h2>Create Media for Client</h2>   *@
+@* //Criar média para um cliente específico *@  
+
+@* @inject MXAppMedia.Web.Services.ClientService ClientService  
+@{  
+    ViewData["Title"] = "Create Media for Client";  
+}  
+<h2>Create Media for Client</h2>  
+<form asp-action="CreateMediaClient" method="post">  
+    <hr />  
+    <div asp-validation-summary="All" class="text-danger"></div>  
+    <input type="hidden" asp-for="ClientId" />  
+ *@    @*Incluir nome do cliente para ser visualizado na tela*@  
+    @* @{
+        var clienteName = ClientService.GetClientByIdAsync(Model.ClientId).Result?.Name;
+        if (Model.ClientId != 0)
+        {
+            @clienteName } else { <span class="text-danger">No Client Selected</span> }  
+    }  
+      
+    <hr />  
+    <div class="form-group">  
+        <label asp-for="Title"></label>  
+        <input asp-for="Title" class="form-control" />  
+        <span asp-validation-for="Title" class="text-danger"></span>  
+    </div>  
+    <div class="form-group">  
+        <label asp-for="Description"></label>  
+        <textarea asp-for="Description" class="form-control"></textarea>  
+        <span asp-validation-for="Description" class="text-danger"></span>  
+    </div>  
+    <div class="form-group">  
+        <label asp-for="MediaUrl"></label>  
+        <input asp-for="MediaUrl" class="form-control" />  
+        <span asp-validation-for="MediaUrl" class="text-danger"></span>  
+    </div>  
+    <hr />  
+    <div class="form-group">  
+        <button type="submit" class="btn btn-primary">Create</button>  
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>  
+    </div>  
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>  
+</form>
+ *@
+
+
+@model MXAppMedia.Web.Models.MediaViewModel
 
 <h2>Creating a new Media</h2>
 <form asp-action="CreateMedia">

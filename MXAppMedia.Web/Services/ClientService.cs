@@ -9,7 +9,7 @@ namespace MXAppMedia.Web.Services;
 public class ClientService : IClientService
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private const string apiEndPoint = "api/clients";
+    private const string apiEndPoint = "api/Clients/";
     private readonly JsonSerializerOptions _options;
     private ClientViewModel clienteViewModel;
     private IEnumerable<ClientViewModel> clientsViewModel;

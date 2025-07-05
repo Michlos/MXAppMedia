@@ -9,10 +9,14 @@ namespace MXAppMedia.Web.Controllers
     public class ClientsController : Controller
     {
         private readonly IClientService _clientService;
-        public ClientsController(IClientService clientService)
+        private readonly IMediaService _mediaService;
+        public ClientsController(IClientService clientService, IMediaService mediaService)
         {
             _clientService = clientService;
+            _mediaService = mediaService;
         }
+
+        //CLIENTS LIST 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClientViewModel>>> Index()
         {
@@ -24,6 +28,7 @@ namespace MXAppMedia.Web.Controllers
             return View(result);
         }
 
+        //CREATE CLIENT GETTING LIST DO CREATE CLIENT
         [HttpGet]
         public async Task<IActionResult> CreateClient()
         {
@@ -48,5 +53,37 @@ namespace MXAppMedia.Web.Controllers
             }
             return View(clientViewModel);
         }
+
+        //DETALHE DO CLIENTE
+        [HttpGet]
+        public async Task<IActionResult> DetailClient(int id)
+        {
+            var client = await _clientService.GetClientByIdAsync(id);
+            if (client == null)
+            {
+                return NotFound("Client not found.");
+            }
+
+            //trazer mídias do cliente
+            ICollection<MediaViewModel> medias =  _mediaService.GetAllMediaByClienteIdAsync(id).Result.ToList();
+
+            return View(client);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ClientViewModel>> ClientDetailView(int id)
+        {
+            var client = await _clientService.GetClientByIdAsync(id);
+            if (client == null)
+            {
+                return NotFound("Client not found.");
+            }
+            //trazer mídias do cliente
+            //ICollection<MediaViewModel> medias = (ICollection<MediaViewModel>)await _mediaService.GetAllMediaByClienteIdAsync(id);
+            //client.Medias = medias.ToList();
+            client.Medias = await _mediaService.GetAllMediaByClienteIdAsync(id);
+            return View(client);
+        }
+
     }
 }

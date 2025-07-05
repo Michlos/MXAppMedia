@@ -12,7 +12,7 @@ public class MediaService : IMediaService
     private const string apiEndPoint = "/api/Medias/";
     private readonly JsonSerializerOptions _options;
     private MediaViewModel mediaViewModel;
-    private IEnumerable<MediaViewModel> listMediaViewModel;
+    private IEnumerable<MediaViewModel>? listMediaViewModel;
 
     public MediaService(IHttpClientFactory httpClientFactory)
     {
@@ -64,22 +64,42 @@ public class MediaService : IMediaService
     }
     public async Task<IEnumerable<MediaViewModel>> GetAllMediaByClienteIdAsync(int clienteId)
     {
-        var client = _httpClientFactory.CreateClient("MediaApi");
+        //var client = _httpClientFactory.CreateClient("MediaApi");
 
-        using (var response = await client.GetAsync(apiEndPoint + clienteId))
+        //using (var response = await client.GetAsync(apiEndPoint + clienteId))
+        //{
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var apíResponse = await response.Content.ReadAsStreamAsync();
+        //        listMediaViewModel = await JsonSerializer
+        //            .DeserializeAsync<IEnumerable<MediaViewModel>>(apíResponse, _options);
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+        //return listMediaViewModel;
+        var url = $"{apiEndPoint}client/{clienteId}";
+        var response = await _httpClientFactory.CreateClient("MediaApi").GetAsync(url);
+        if (!response.IsSuccessStatusCode)
         {
-            if (response.IsSuccessStatusCode)
-            {
-                var apíResponse = await response.Content.ReadAsStreamAsync();
-                listMediaViewModel = await JsonSerializer
-                    .DeserializeAsync<IEnumerable<MediaViewModel>>(apíResponse, _options);
-            }
-            else
-            {
-                return null;
-            }
+            throw new Exception(url + " - " + response.ReasonPhrase);
         }
-        return listMediaViewModel;
+
+        using var stream = await response.Content.ReadAsStreamAsync();
+        using var reader = new StreamReader(stream);
+        var rawJson = await reader.ReadToEndAsync();
+
+        if (string.IsNullOrEmpty(rawJson))
+        {
+            return Enumerable.Empty<MediaViewModel>();
+        }
+        else 
+        {
+            return JsonSerializer.Deserialize<IEnumerable<MediaViewModel>>(rawJson, _options) ?? Enumerable.Empty<MediaViewModel>();
+        }
+
     }
 
     public async Task<MediaViewModel> AddMediaAsync(MediaViewModel mediaViewModel)
@@ -90,6 +110,27 @@ public class MediaService : IMediaService
             Encoding.UTF8, "application/json");
 
         using (var response = await client.PostAsync(apiEndPoint, content))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                mediaViewModel = await JsonSerializer
+                    .DeserializeAsync<MediaViewModel>(apiResponse, _options);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        return mediaViewModel;
+    }
+
+    public async Task<MediaViewModel> AddMediaClientAsync(MediaViewModel mediaViewModel)
+    {
+        var client = _httpClientFactory.CreateClient("MediaApi");
+        StringContent content = new StringContent(JsonSerializer.Serialize(mediaViewModel),
+            Encoding.UTF8, "application/json");
+        using (var response = await client.PostAsync(apiEndPoint + "CreateMediaClient", content))
         {
             if (response.IsSuccessStatusCode)
             {
