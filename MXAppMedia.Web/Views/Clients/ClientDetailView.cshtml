@@ -71,9 +71,10 @@
                     <td><a href="@media.MediaUrl" target="_blank">@media.MediaUrl</a></td>  
                     <td>  
                         <a asp-controller="Medias" asp-action="EditMedia" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a>  
-                        <form method="post" asp-asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="d-inline">  
+                        <a asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="btn btn-danger">Delete</a>
+                        @* <form method="post" asp-asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="d-inline">  
                             <button type="submit" class="btn btn-danger">Delete</button>  
-                        </form>  
+                        </form>   *@
                     </td>  
                 </tr>  
             }  

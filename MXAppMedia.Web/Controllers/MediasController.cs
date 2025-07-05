@@ -163,11 +163,12 @@ public class MediasController : Controller
     [HttpPost, ActionName("DeleteMedia")]
     public async Task<IActionResult> DeleteMediaConfirmed(int id)
     {
+        var clientId = (await _mediaService.GetMediaByIdAsync(id))?.ClientId;
         var result = await _mediaService.DeleteMediaAsync(id);
         if (!result)
             return View("Error");
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("ClientDetailView", "Clients", new {id = clientId});
     }
 
     [HttpGet]
