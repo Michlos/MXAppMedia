@@ -85,5 +85,34 @@ namespace MXAppMedia.Web.Controllers
             return View(client);
         }
 
+        //EDIT CLIENTE
+        [HttpGet]
+        public async Task<IActionResult> EditClient(int id)
+        {
+            var client = await _clientService.GetClientByIdAsync(id);
+            if (client == null)
+            {
+                return NotFound("Client not found.");
+            }
+            ViewBag.ClientId = new SelectList(await _clientService.GetAllClientAsync(), "Id", "Name", client.Id);
+            return View(client);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditClient(ClientViewModel clientViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _clientService.UpdateClientAsync(clientViewModel);
+                if (result != null)
+                    return RedirectToAction("ClientDetailView", "Clients", new {clientViewModel.Id});
+                //ModelState.AddModelError("", "Failed to update client.");
+            }
+            else
+            {
+                ViewBag.ClientId = new SelectList(await _clientService.GetAllClientAsync(), "Id", "Name", clientViewModel.Id);
+            }
+            return View(clientViewModel);
+        }
+
     }
 }

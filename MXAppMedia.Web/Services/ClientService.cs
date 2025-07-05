@@ -23,7 +23,7 @@ public class ClientService : IClientService
     public async Task<IEnumerable<ClientViewModel>> GetAllClientAsync()
     {
         var client = _httpClientFactory.CreateClient("MediaApi");
-        IEnumerable<ClientViewModel> listClientViewModel;
+        IEnumerable<ClientViewModel>? listClientViewModel = null; // Use nullable type to avoid CS8600
 
         var response = await client.GetAsync(apiEndPoint);
         if (response.IsSuccessStatusCode)
@@ -34,10 +34,9 @@ public class ClientService : IClientService
         }
         else
         {
-            return null;
+            return Enumerable.Empty<ClientViewModel>(); // Return an empty collection instead of null
         }
-        return listClientViewModel;
-
+        return listClientViewModel ?? Enumerable.Empty<ClientViewModel>(); // Ensure a non-null return value
     }
     public async Task<ClientViewModel> GetClientByIdAsync(int id)
     {
@@ -48,42 +47,51 @@ public class ClientService : IClientService
             {
                 var apiResponse = await response.Content.ReadAsStreamAsync();
                 clienteViewModel = await JsonSerializer
-                    .DeserializeAsync<ClientViewModel>(apiResponse, _options);
+                    .DeserializeAsync<ClientViewModel>(apiResponse, _options)
+                    ?? new ClientViewModel(); // Ensure clienteViewModel is not null
             }
-            else
-            {
-                return null;
-            }
-            return clienteViewModel;
         }
-
+        return clienteViewModel ?? new ClientViewModel(); // Return a new instance if null
     }
 
-    public async Task<ClientViewModel> AddClientAsync(ClientViewModel clientViewModel)
+    public async Task<ClientViewModel?> AddClientAsync(ClientViewModel clientViewModel) // Use nullable return type
     {
         var client = _httpClientFactory.CreateClient("MediaApi");
         StringContent content = new StringContent(JsonSerializer.Serialize(clientViewModel),
             System.Text.Encoding.UTF8, "application/json");
+
+        ClientViewModel? resultClientViewModel = null; // Initialize with null to avoid CS8601
 
         using (var response = await client.PostAsync(apiEndPoint, content))
         {
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = await response.Content.ReadAsStreamAsync();
-                clienteViewModel = await JsonSerializer
+                resultClientViewModel = await JsonSerializer
                     .DeserializeAsync<ClientViewModel>(apiResponse, _options);
             }
-            else
-            {
-                return null;
-            }
         }
-        return clienteViewModel;
+        return resultClientViewModel; // Return null if not successful
     }
 
-    public Task<ClientViewModel> UpdateClientAsync(ClientViewModel clientViewModel)
+    public async Task<ClientViewModel?> UpdateClientAsync(ClientViewModel clientViewModel) // Use nullable return type
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("MediaApi");
+        StringContent content = new StringContent(JsonSerializer.Serialize(clientViewModel),
+            System.Text.Encoding.UTF8, "application/json");
+
+        ClientViewModel? updatedClientViewModel = null; // Initialize with null to avoid CS8601
+
+        using (var response = await client.PutAsync(apiEndPoint + clientViewModel.Id, content))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                updatedClientViewModel = await JsonSerializer
+                    .DeserializeAsync<ClientViewModel>(apiResponse, _options);
+            }
+        }
+        return updatedClientViewModel; // Return null if not successful
     }
     public Task<bool> DeleteClientAsync(int id)
     {
