@@ -41,7 +41,7 @@
                         @Html.DisplayFor(modelItem => item.ContactPerson)
                     </td>
                     <td>
-                        <a href="@Url.Action("CreateMedia", "Medias", new { ClientId = item.Id })" class="btn btn-success" title="Create Media"><span class="fa fa-plus"></span> Create Media</a>
+                        <a asp-controller="Medias" asp-action="CreateMediaClient" asp-route-clientId="@item.Id" class="btn btn-success">Create Media</a>
                     </td>
                     <td>
                         <a asp-action="EditClient" asp-route-id="@item.Id" title="Edit" class="btn btn-warning">
